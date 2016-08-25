@@ -1,0 +1,21 @@
+{
+  "name": "cookie-jar",
+  "version": "0.0.1",
+  "description": "A library to bucket multiple cookies in a single cookie with fast storage and retrieval.",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify src -o dist/ampere.js -s ampere",
+    "build-min": "uglifyjs -m -c --screw-ie8 src/cookie-jar.js --source-map dist/cookie-jar.min.js.map -o dist/cookie-jar.min.js",
+    "test": "npm run build-test; testem ci",
+    "lint": "jshint src test",
+    "testem": "testem"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine-core": "^2.4.1",
+    "jshint": "^2.9.2",
+    "testem": "^1.6.0",
+    "uglify-js": "^2.6.2"
+  }
+}
