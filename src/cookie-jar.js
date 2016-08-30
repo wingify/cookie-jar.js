@@ -3,10 +3,8 @@
 var encode = window.encodeURIComponent
 var decode = window.decodeURIComponent
 var reUppercase = /[A-Z]/
-var errors = {
-	COOKIE_TOO_LARGE: 'ctl',
-	COOOKIE_LIMIT_REACHED: 'clr'
-}
+var ERROR_COOKIE_TOO_LARGE = 'ctl'
+var ERROR_COOKIE_LIMIT_REACHED = 'clr'
 
 function error(s) {
 	throw new Error(s)
@@ -119,7 +117,7 @@ function decodeNumber(n) {
  */
 function encodeCookie(key, value, expiry) {
 	expiry = expiry || 0
-	if (key.length >= 16 || value.length >= 256 || expiry >= 2048 || expiry < 0) error(errors.COOKIE_TOO_LARGE)
+	if (key.length >= 16 || value.length >= 256 || expiry >= 2048 || expiry < 0) error(ERROR_COOKIE_TOO_LARGE)
 	var microcookie = key.length < 8 && value.length < 8
 	var smallExpiry = expiry < 1
 	expiry = Math.floor(expiry * (smallExpiry ? 100 : 1))
@@ -228,7 +226,7 @@ function CookieJar(jarName, domain) {
 		if (document.cookie.length >= 4000) {
 			cookieString = oldCookieString
 			sync()
-			error(errors.COOOKIE_LIMIT_REACHED)
+			error(ERROR_COOKIE_LIMIT_REACHED)
 		}
 		return value
 	}
@@ -291,4 +289,4 @@ function CookieJar(jarName, domain) {
 	return obj
 }
 
-if (typeof exports !== 'undefined') exports = CookieJar
+window.CookieJar = CookieJar
