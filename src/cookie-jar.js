@@ -225,7 +225,7 @@ function CookieJar(jarName, domain) {
 		cookieString += encodeCookie(key, value, convertExpiry(expiry, rel))
 		newCookieString = cookieString
 		sync()
-		if (cookieString !== newCookieString) {
+		if (document.cookie.length >= 4000) {
 			cookieString = oldCookieString
 			sync()
 			error(errors.COOOKIE_LIMIT_REACHED)
@@ -244,6 +244,13 @@ function CookieJar(jarName, domain) {
 	function sync() {
 		setCookie(jarName, cookieString, domain)
 		cookieString = getCookie(jarName)
+	}
+
+	function clear() {
+		var rel = get('_')
+		cookieString = ''
+		set('_', rel)
+		sync()
 	}
 
 	/**
@@ -275,7 +282,8 @@ function CookieJar(jarName, domain) {
 		get: get,
 		set: set,
 		unset: unset,
-		getAll: getAll
+		getAll: getAll,
+		clear: clear
 	}
 
 	jars[jarName] = obj

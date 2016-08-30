@@ -121,7 +121,7 @@ describe('method: decodeCookie', function () {
 
 describe('class: CookieJar', function () {
 	beforeEach(function () {
-		document.cookie = 'myjar=; expires=Thu, 01 Jan 1970 00:00:00 GMT;'
+		document.cookie = 'myjar=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
 	});
 
 	describe('constructor', function () {
@@ -158,6 +158,14 @@ describe('class: CookieJar', function () {
 
 			expect(jar2.get('wow')).toBe('awesome')
 			expect(jar.get('wow')).toBe('awesome')
+		})
+		it('throws an error if too many cookies are set', function () {
+			expect(function () {
+				var jar = new CookieJar('myjar')
+				for (var i = 0; i < 400; i++) {
+					jar.set('a' + i, 'b' + i)
+				}
+			}).toThrow()
 		})
 	})
 
