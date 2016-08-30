@@ -12,8 +12,6 @@ function error(s) {
 	throw new Error(s)
 }
 
-
-
 /**
  * Gets a cookie (native)
  *
@@ -41,9 +39,6 @@ function setCookie(name, value, domain) {
 	c += 'expires=Sun, 26 Jul 2116 11:47:19 GMT; path=/'
 
 	document.cookie = c
-
-	if (getCookie(name) !== value)
-		error(errors.COOOKIE_LIMIT_REACHED)
 }
 
 
@@ -124,7 +119,7 @@ function decodeNumber(n) {
  */
 function encodeCookie(key, value, expiry) {
 	expiry = expiry || 0
-	if (key.length >= 16 || value.length >= 256 || expiry >= 2048) error(errors.COOKIE_TOO_LARGE)
+	if (key.length >= 16 || value.length >= 256 || expiry >= 2048 || expiry < 0) error(errors.COOKIE_TOO_LARGE)
 	var microcookie = key.length < 8 && value.length < 8
 	var smallExpiry = expiry < 1
 	expiry = Math.floor(expiry * (smallExpiry ? 100 : 1))
@@ -184,6 +179,7 @@ function convertExpiry(expiry, rel) {
 	return Math.floor(expiry + (Date.now() - rel) / 864e5)
 }
 
+var jars = {}
 
 /**
  * Creates a cookie jar object.
@@ -206,18 +202,14 @@ function CookieJar(jarName, domain) {
 	// expires a cookie by removing it from the jar.
 	function expireCookie(cookie, i) {
 		cookieString = cookieString.substr(0, i) + cookieString.substr(i + cookie[3] /* length */)
-		delete cache[cookie[0]]
 		sync()
 		return true
 	}
 
 	/// gets a cookie in the jar by a key
 	function get(key) {
-		if (!isCookieExpired(cache[key])) { return cache[key][1] }
-
 		var val
 		cookieForEach(cookieString, function (cookie, i) {
-			cache[cookie[0]] = cookie
 			if (key !== cookie[0]) return
 			if (isCookieExpired(cookie)) expireCookie(cookie, i)
 			val = cookie[1]
@@ -228,12 +220,16 @@ function CookieJar(jarName, domain) {
 
 	/// sets a cookie in the jar with an expiry
 	function set(key, value, expiry) {
+		var oldCookieString = cookieString, newCookieString
 		unset(key)
-		var encodedCookie = encodeCookie(key, value, convertExpiry(expiry, rel))
-		cookieString += encodedCookie
-		var cookie = decodeCookie(encodedCookie)
-		cache[cookie[0]] = cookie
+		cookieString += encodeCookie(key, value, convertExpiry(expiry, rel))
+		newCookieString = cookieString
 		sync()
+		if (cookieString !== newCookieString) {
+			cookieString = oldCookieString
+			sync()
+			error(errors.COOOKIE_LIMIT_REACHED)
+		}
 		return value
 	}
 
@@ -247,6 +243,7 @@ function CookieJar(jarName, domain) {
 	/// syncs the jar cookies with document.cookie
 	function sync() {
 		setCookie(jarName, cookieString, domain)
+		cookieString = getCookie(jarName)
 	}
 
 	/**
@@ -266,19 +263,24 @@ function CookieJar(jarName, domain) {
 		return cookies
 	}
 
+	if (jars[jarName]) return jars[jarName]
+
 	var cookieString = getCookie(jarName) || ''
-	var cache = {}
 	var rel = get('_')
 	if (!rel) rel = set('_', encodeNumber(Date.now()))
 
 	rel = decodeNumber(rel)
 
-	return {
+	var obj = {
 		get: get,
 		set: set,
 		unset: unset,
 		getAll: getAll
 	}
+
+	jars[jarName] = obj
+
+	return obj
 }
 
 if (typeof exports !== 'undefined') exports = CookieJar

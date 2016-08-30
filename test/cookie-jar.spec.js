@@ -1,11 +1,3 @@
-describe('class: CookieJar', function () {
-	describe('constructor', function () {
-		it('should work', function () {
-			expect(true).toBeTruthy()
-		})
-	})
-})
-
 var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-'
 
 describe('method: charToNumber', function () {
@@ -124,5 +116,73 @@ describe('method: decodeCookie', function () {
 		expect(decodeCookie('!rf0J8 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 1466898408000, 128 ])
 		expect(decodeCookie('!rfdY8 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 1505413800000, 128 ])
 		expect(decodeCookie('!rf-s8 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 1642271400000, 128 ])
+	})
+})
+
+describe('class: CookieJar', function () {
+	beforeEach(function () {
+		document.cookie = 'myjar=; expires=Thu, 01 Jan 1970 00:00:00 GMT;'
+	});
+
+	describe('constructor', function () {
+		it('creates a new timestamp cookie on its own', function () {
+			var jar = new CookieJar('myjar')
+			expect(jar.get('_')).toBeDefined()
+		})
+	})
+
+	describe('set/get', function () {
+		it('sets a cookie in the jar', function () {
+			var jar = new CookieJar('myjar')
+			jar.set('hello', 'world')
+			jar.set('yellow', 'card')
+			jar.set('8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.');
+			jar.set('_vwo_cookie', '2', 0.45)
+			jar.set('_vwo_cookie2', '22', 1999)
+
+			expect(jar.get('hello')).toBe('world')
+			expect(jar.get('yellow')).toBe('card')
+			expect(jar.get('8 chars or more')).toBe('A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.')
+			expect(jar.get('_vwo_cookie')).toBe('2')
+			expect(jar.get('_vwo_cookie2')).toBe('22')
+
+			// cookies also available in the other jar
+			var jar2 = new CookieJar('myjar')
+			expect(jar2.get('hello')).toBe('world')
+			expect(jar2.get('yellow')).toBe('card')
+			expect(jar2.get('8 chars or more')).toBe('A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.')
+			expect(jar2.get('_vwo_cookie')).toBe('2')
+			expect(jar2.get('_vwo_cookie2')).toBe('22')
+
+			jar2.set('wow', 'awesome')
+
+			expect(jar2.get('wow')).toBe('awesome')
+			expect(jar.get('wow')).toBe('awesome')
+		})
+	})
+
+	describe('unset', function () {
+		it('unsets a cookie from the jar', function () {
+			var jar = new CookieJar('myjar')
+			jar.set('hello', 'world')
+			jar.set('yellow', 'card')
+			jar.set('8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.');
+			jar.set('_vwo_cookie', '2', 0.45)
+			jar.set('_vwo_cookie2', '22', 1999)
+
+			// non cache test
+			var jar2 = new CookieJar('myjar')
+			expect(jar2.get('hello')).toBe('world')
+			expect(jar2.get('yellow')).toBe('card')
+			expect(jar2.get('8 chars or more')).toBe('A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.')
+			expect(jar2.get('_vwo_cookie')).toBe('2')
+			expect(jar2.get('_vwo_cookie2')).toBe('22')
+
+			jar2.unset('hello')
+
+			expect(jar.get('hello')).not.toBeDefined()
+			expect(jar2.get('hello')).not.toBeDefined()
+
+		})
 	})
 })
