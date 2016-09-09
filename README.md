@@ -60,7 +60,7 @@ The compiled cookie string is really compact and takes very little space.
 - If cookie `key.length < 16` and `value.length < 256`, it is a macro cookie, and takes 5 extra characters for meta information. The first character identifies the cookie as a macro-cookie. The next two characters store the length of the cookie's key and value (4 and 8 bits respectively = 16 and 256 characters respectively) and the next two characters indicate cookie's expiry in days.
  
 ### Performant
-Compared to JSON, this is quite a compact way of storing strings. While iterating through the cookie string, the length of the cookie is stored in the beginning of each cookie so the logic can *hop* through the string and get to the next cookie by adding the cookie's length each time. Searching or splitting the string is unnecessary.
+Compared to JSON, this is quite a compact way of storing strings. While iterating through the cookie string, the length of the cookie is stored in the beginning of each cookie so the logic can *hop* through the string and get to the next cookie by adding the cookie's length each time. Searching or splitting the string is unnecessary, which makes the code really performant by avoiding serialization and deserialization altogether.
 
 ## Contributing
 
