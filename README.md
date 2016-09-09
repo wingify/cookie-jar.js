@@ -29,9 +29,9 @@ Creates a new CookieJar with the given name. A browser cookie is created with th
 
 Sets a cookie in the jar with the given `key` and `value` passed as strings. Optionally you may also include an expiry (in days) 
 after which the cookie will expire. For storage and performance reasons, the parameters have the following limitations:
-- `key`: A string between 1 and 15 characters
-- `value`: A string between 1 and 255 characters
-- `expiry`: A number between 1 and 2047 (if > 1), or between 0.01 and 0.99 (if < 1)
+- `key`: A string between 1 and 15 characters.
+- `value`: A string between 1 and 255 characters.
+- `expiry`: A number between 1 and 2047 (if > 1), or between 0.01 and 0.99 (if < 1).
 
 **Get a cookie** `jar.get( key )`
 
