@@ -26,7 +26,7 @@ describe('method: encodeNumber', function () {
 		expect(encodeNumber(10003)).toBe('2sj')
 		expect(encodeNumber(349555)).toBe('1llP')
 		expect(encodeNumber(4663622)).toBe('hOB6')
-		expect(encodeNumber(+new Date(2009, 3, 3))).toBe('i1E63N0')
+		expect(encodeNumber(+Date.UTC(2009, 3, 3))).toBe('i1FhBM0')
 	})
 })
 
@@ -40,7 +40,7 @@ describe('method: decodeNumber', function () {
 		expect(decodeNumber('2sj')).toBe(10003)
 		expect(decodeNumber('1llP')).toBe(349555)
 		expect(decodeNumber('hOB6')).toBe(4663622)
-		expect(decodeNumber('i1E63N0')).toBe(+new Date(2009, 3, 3))
+		expect(decodeNumber('i1FhBM0')).toBe(+Date.UTC(2009, 3, 3))
 	})
 })
 
@@ -102,26 +102,26 @@ describe('method: encodeCookie', function () {
 
 describe('method: decodeCookie', function () {
 	it('decodes a cookie in encoded form and gives back an array of results', function () {
-		var rel = +new Date(2016, 5, 26)
+		var rel = +Date.UTC(2016, 5, 26)
 
 		expect(decodeCookie('901ab', rel)).toEqual([ 'a', 'b', 0, 5 ])
-		expect(decodeCookie('915ab', rel)).toEqual([ 'a', 'b', 1466908776000, 5 ])
-		expect(decodeCookie('97Yab', rel)).toEqual([ 'a', 'b', 1488825000000, 5 ])
-		expect(decodeCookie('9-Mab', rel)).toEqual([ 'a', 'b', 1643135400000, 5 ])
+		expect(decodeCookie('915ab', rel)).toEqual([ 'a', 'b', 1466928576000, 5 ])
+		expect(decodeCookie('97Yab', rel)).toEqual([ 'a', 'b', 1488844800000, 5 ])
+		expect(decodeCookie('9-Mab', rel)).toEqual([ 'a', 'b', 1643155200000, 5 ])
 		expect(decodeCookie('!0v018 chars or moreb', rel)).toEqual([ '8 chars or more', 'b', 0, 21 ])
-		expect(decodeCookie('!0v138 chars or moreb', rel)).toEqual([ '8 chars or more', 'b', 1466907912000, 21 ])
-		expect(decodeCookie('!0v808 chars or moreb', rel)).toEqual([ '8 chars or more', 'b', 1488997800000, 21 ])
-		expect(decodeCookie('!0v-M8 chars or moreb', rel)).toEqual([ '8 chars or more', 'b', 1643135400000, 21 ])
+		expect(decodeCookie('!0v138 chars or moreb', rel)).toEqual([ '8 chars or more', 'b', 1466927712000, 21 ])
+		expect(decodeCookie('!0v808 chars or moreb', rel)).toEqual([ '8 chars or more', 'b', 1489017600000, 21 ])
+		expect(decodeCookie('!0v-M8 chars or moreb', rel)).toEqual([ '8 chars or more', 'b', 1643155200000, 21 ])
 		expect(decodeCookie('!rf018 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 0, 128 ])
-		expect(decodeCookie('!rf0J8 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 1466898408000, 128 ])
-		expect(decodeCookie('!rfdY8 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 1505413800000, 128 ])
-		expect(decodeCookie('!rf-s8 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 1642271400000, 128 ])
+		expect(decodeCookie('!rf0J8 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 1466918208000, 128 ])
+		expect(decodeCookie('!rfdY8 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 1505433600000, 128 ])
+		expect(decodeCookie('!rf-s8 chars or moreA quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', rel)).toEqual([ '8 chars or more', 'A quick brown fox jumps over the lazy dog and what not etc etc etc .. Jackdaws love my big sphinx of quartz.', 1642291200000, 128 ])
 	})
 })
 
 describe('class: CookieJar', function () {
 	beforeEach(function () {
-		document.cookie = 'myjar=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
+		document.cookie = 'myjar=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;'
 	});
 
 	describe('constructor', function () {
