@@ -1,6 +1,9 @@
 # CookieJar
 A fast and compact micro-cookie manager written in JavaScript. Just 1KB minified and gzipped.
 
+[![npm version](https://badge.fury.io/js/cookie-jar.js.svg)](https://badge.fury.io/js/cookie-jar.js)
+[![Build Status](https://travis-ci.org/wingify/cookie-jar.js.svg?branch=master)](https://travis-ci.org/wingify/cookie-jar.js)
+
 ## Why CookieJar?
 
 Certain browsers have a limitation on how many cookies can be created and also on the total size of all the cookies. To bypass that,
