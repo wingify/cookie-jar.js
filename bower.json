@@ -1,0 +1,18 @@
+{
+  "name": "cookie-jar.js",
+  "description": "A library to bucket multiple cookies in a single cookie with fast storage and retrieval.",
+  "main": "src/cookie-jar.js",
+  "authors": [
+    "Himanshu Kapoor <info@fleon.org>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/wingify/cookie-jar.js",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
