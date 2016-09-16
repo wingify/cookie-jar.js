@@ -1,5 +1,6 @@
 {
   "name": "cookie-jar.js",
+  "version": "v1.0.1",
   "description": "A library to bucket multiple cookies in a single cookie with fast storage and retrieval.",
   "main": "src/cookie-jar.js",
   "authors": [
