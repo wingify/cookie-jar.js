@@ -2,6 +2,7 @@
 A fast and compact micro-cookie manager written in JavaScript. Just 1KB minified and gzipped.
 
 [![npm version](https://badge.fury.io/js/cookie-jar.js.svg)](https://badge.fury.io/js/cookie-jar.js)
+[![Bower version](https://badge.fury.io/bo/cookie-jar.js.svg)](https://badge.fury.io/bo/cookie-jar.js)
 [![Build Status](https://travis-ci.org/wingify/cookie-jar.js.svg?branch=master)](https://travis-ci.org/wingify/cookie-jar.js)
 
 ## Why CookieJar?
