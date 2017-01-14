@@ -68,8 +68,8 @@ Compared to JSON, this is quite a compact way of storing strings. While iteratin
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/wingify/q-directives/blob/master/CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com/wingify/cookie-jar.js/blob/master/CONTRIBUTING.md)
 
 ## License
 
-See [LICENSE.md](https://github.com/wingify/q-directives/blob/master/LICENSE.md)
+See [LICENSE.md](https://github.com/wingify/cookie-jar.js/blob/master/LICENSE.md)
